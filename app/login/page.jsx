@@ -19,9 +19,6 @@ export default function LoginPage() {
     if (email || password) {
       setError("Must provide all the credentials.");
     }
-    // signIn("credentials", {email, password})
-    //   router.replace("/dashboard");
-
     try {
       setPending(true);
       const res = await signIn("credentials", {

@@ -11,8 +11,9 @@ const navItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const session = useSession()
-  console.log(session);
+  const session = useSession();
+  const name = session.data?.user?.username;
+  console.log(session.data?.user);
   console.log(session.status);
 
   return (
@@ -55,28 +56,34 @@ export default function Navbar() {
           {/* -----------------------Authentication-------------------------- */}
           <div className="flex items-center gap-4">
             <div className="sm:flex sm:gap-4">
-              <a
-                className="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"
-                href="/login"
-              >
-                Login
-              </a>
-
-              <a
-                className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
-                href="/register"
-              >
-                Register
-              </a>
-              {
-                session.status === "authenticated" &&
+              {name ? (
+                <p className="px-5 py-2.5 text-sm font-medium">
+                  {name}
+                </p>
+              ) : (
+                <div>
+                  <a
+                    className="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"
+                    href="/login"
+                  >
+                    Login
+                  </a>
+                  <a
+                    className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
+                    href="/register"
+                  >
+                    Register
+                  </a>
+                </div>
+              )}
+              {session.status === "authenticated" && (
                 <button
-                className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
-                onClick={signOut}
+                  className="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
+                  onClick={signOut}
                 >
-                Sign Out
-              </button>
-              }
+                  Sign Out
+                </button>
+              )}
             </div>
 
             {/* -----------------------for Small Device-------------------------- */}

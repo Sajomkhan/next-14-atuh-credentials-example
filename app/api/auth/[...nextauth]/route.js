@@ -41,11 +41,33 @@ const handler = NextAuth({
     }),
   ],
 
-  // If any error occured during Sign in it will redirect to the bellow address
-  pages:{
-    error: "/login" 
-  }
+  // Pute user information into the token & session
+  callbacks: {
+    // Put the user info in to the token
+    async jwt({ token, user }) {
+      if (user) {
+        token.username = user.username;
+        token.email = user.email;
+        token.id = user.id;
+      }
+      return token;
+    },
+    // Put the token info in to the session
+    async session({ session, token }) {
+      if (token) {
+        session.user.username = token.username;
+        session.user.email = token.email;
+        session.user.id = token.id;
+      }
+      console.log("session: ", session);
+      return session;
+    },
+  },
 
+  // If any error occured during Sign in it will redirect to the bellow address
+  pages: {
+    error: "/login",
+  },
 });
 
 export { handler as GET, handler as POST };
